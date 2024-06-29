@@ -44,6 +44,7 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     // watchメソッドを利用してアプリの現在の状態に対する変更を追跡
     var appState = context.watch<MyAppState>();
+    var pair = appState.current;
 
     // どのbuildメソッドもかならずウィジェットかウィジェットのネストしたツリーを返却する
     return Scaffold(
@@ -52,7 +53,7 @@ class MyHomePage extends StatelessWidget {
         children: [
           Text('A random AWESOME idea:'),
           // appSatateを取り、そのクラスのメンバーであるcurrent(WordPair)にアクセス
-          Text(appState.current.asLowerCase),
+          BigCard(pair: pair),
           ElevatedButton(
             onPressed: () {
               appState.getNext();
@@ -62,5 +63,19 @@ class MyHomePage extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class BigCard extends StatelessWidget {
+  const BigCard({
+    super.key,
+    required this.pair,
+  });
+
+  final WordPair pair;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(pair.asLowerCase);
   }
 }
