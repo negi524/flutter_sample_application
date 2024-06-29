@@ -36,6 +36,17 @@ class MyAppState extends ChangeNotifier {
     // 監視しているMyAppStateに通知する
     notifyListeners();
   }
+
+  var favorites = <WordPair>[];
+
+  void toggleFavorite() {
+    if (favorites.contains(current)) {
+      favorites.remove(current);
+    } else {
+      favorites.add(current);
+    }
+    notifyListeners();
+  }
 }
 
 class MyHomePage extends StatelessWidget {
@@ -45,6 +56,13 @@ class MyHomePage extends StatelessWidget {
     // watchメソッドを利用してアプリの現在の状態に対する変更を追跡
     var appState = context.watch<MyAppState>();
     var pair = appState.current;
+
+    IconData icon;
+    if (appState.favorites.contains(pair)) {
+      icon = Icons.favorite;
+    } else {
+      icon = Icons.favorite_border;
+    }
 
     // どのbuildメソッドもかならずウィジェットかウィジェットのネストしたツリーを返却する
     return Scaffold(
@@ -56,11 +74,24 @@ class MyHomePage extends StatelessWidget {
             // appSatateを取り、そのクラスのメンバーであるcurrent(WordPair)にアクセス
             BigCard(pair: pair),
             SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () {
-                appState.getNext();
-              },
-              child: Text('Next'),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ElevatedButton.icon(
+                  onPressed: () {
+                    appState.toggleFavorite();
+                  },
+                  icon: Icon(icon),
+                  label: Text('Like'),
+                ),
+                SizedBox(width: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    appState.getNext();
+                  },
+                  child: Text('Next'),
+                ),
+              ],
             )
           ],
         ),
