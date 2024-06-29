@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+  // MyAppで定義したアプリの実行をFlutterに指示する
   runApp(MyApp());
 }
 
@@ -25,19 +26,25 @@ class MyApp extends StatelessWidget {
   }
 }
 
+// アプリの状態を定義
 class MyAppState extends ChangeNotifier {
   var current = WordPair.random();
 }
 
 class MyHomePage extends StatelessWidget {
   @override
+  // そのウィジェットを常に最新にするために、周囲の状況が変化するたびに自動的に呼び出されるbuild()メソッド
   Widget build(BuildContext context) {
+    // watchメソッドを利用してアプリの現在の状態に対する変更を追跡
     var appState = context.watch<MyAppState>();
 
+    // どのbuildメソッドもかならずウィジェットかウィジェットのネストしたツリーを返却する
     return Scaffold(
+      // ColumnはFlutterにおける基本的なレイアウトウィジェット
       body: Column(
         children: [
           Text('A random AWESOME idea:'),
+          // appSatateを取り、そのクラスのメンバーであるcurrent(WordPair)にアクセス
           Text(appState.current.asLowerCase),
           ElevatedButton(
             onPressed: () {
