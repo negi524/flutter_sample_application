@@ -29,6 +29,13 @@ class MyApp extends StatelessWidget {
 // アプリの状態を定義
 class MyAppState extends ChangeNotifier {
   var current = WordPair.random();
+
+  void getNext() {
+    // currentに新しいランダムなWordPairを再代入する
+    current = WordPair.random();
+    // 監視しているMyAppStateに通知する
+    notifyListeners();
+  }
 }
 
 class MyHomePage extends StatelessWidget {
@@ -48,7 +55,7 @@ class MyHomePage extends StatelessWidget {
           Text(appState.current.asLowerCase),
           ElevatedButton(
             onPressed: () {
-              print('button pressed!');
+              appState.getNext();
             },
             child: Text('Next'),
           )
